@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Auto</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</head>
+<body>
+  <header>
+    <h1 id="title">Doctor Auto</h1>
+    <select id="langSelect">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+  </header>
+
+  <main>
+    <section id="authSection">
+      <h2 id="authTitle">Registrarse / Iniciar sesión</h2>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Contraseña">
+      <button id="registerBtn">Registrarse</button>
+      <button id="loginBtn">Iniciar sesión</button>
+      <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
+    </section>
+
+    <section id="chatSection" style="display:none;">
+      <h2 id="chatTitle">Chat</h2>
+      <div id="messages"></div>
+      <input type="text" id="messageInput" placeholder="Escribí un mensaje">
+      <button id="sendBtn">Enviar</button>
+      <button id="recordBtn">🎤 Grabar Audio</button>
+      <button id="stopBtn" disabled>⏹ Detener</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
