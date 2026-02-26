@@ -1,45 +1,48 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <title>ADN CAR Help</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doctor Auto</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
-<body>
-  <header>
-    <h1 id="title">Doctor Auto</h1>
-    <select id="langSelect">
-      <option value="es">Español</option>
-      <option value="en">English</option>
-    </select>
-  </header>
+<body style="font-family: Arial; text-align: center; padding: 20px;">
 
-  <main>
-    <section id="authSection">
-      <h2 id="authTitle">Registrarse / Iniciar sesión</h2>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Contraseña">
-      <button id="registerBtn">Registrarse</button>
-      <button id="loginBtn">Iniciar sesión</button>
-      <button id="logoutBtn" style="display:none;">Cerrar sesión</button>
-    </section>
+  <h1>ADN CAR Help 🚗</h1>
+  <h2>Solicitar asistencia</h2>
 
-    <section id="chatSection" style="display:none;">
-      <h2 id="chatTitle">Chat</h2>
-      <div id="messages"></div>
-      <input type="text" id="messageInput" placeholder="Escribí un mensaje">
-      <button id="sendBtn">Enviar</button>
-      <button id="recordBtn">🎤 Grabar Audio</button>
-      <button id="stopBtn" disabled>⏹ Detener</button>
-    </section>
-  </main>
+  <input type="text" id="nombre" placeholder="Nombre"><br><br>
+  <input type="text" id="telefono" placeholder="Teléfono"><br><br>
+  <input type="text" id="ubicacion" placeholder="Ubicación"><br><br>
+  <textarea id="problema" placeholder="Describe el problema"></textarea><br><br>
 
-  <script src="script.js"></script>
+  <button onclick="enviarPedido()">Enviar pedido</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase;
+
+    const supabaseClient = createClient(
+      "PEGA_AQUI_TU_URL",
+      "PEGA_AQUI_TU_CLAVE_PUBLICA"
+    );
+
+    async function enviarPedido() {
+      const nombre = document.getElementById("nombre").value;
+      const telefono = document.getElementById("telefono").value;
+      const ubicacion = document.getElementById("ubicacion").value;
+      const problema = document.getElementById("problema").value;
+
+      const { error } = await supabaseClient
+        .from("pedidos")
+        .insert([{ nombre, telefono, ubicacion, problema }]);
+
+      if (error) {
+        alert("Error al enviar pedido");
+        console.log(error);
+      } else {
+        alert("Pedido enviado correctamente 🚗");
+      }
+    }
+  </script>
+
 </body>
 </html>
