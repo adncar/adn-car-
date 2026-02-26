@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8">
   <title>ADN CAR Help</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="font-family: Arial; text-align: center; padding: 20px;">
-
-  <h1>ADN CAR Help 🚗</h1>
-  <h2>Solicitar asistencia</h2>
-
-  <input type="text" id="nombre" placeholder="Nombre"><br><br>
-  <input type="text" id="telefono" placeholder="Teléfono"><br><br>
-  <input type="text" id="ubicacion" placeholder="Ubicación"><br><br>
-  <textarea id="problema" placeholder="Describe el problema"></textarea><br><br>
-
-  <button onclick="enviarPedido()">Enviar pedido</button>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const { createClient } = supabase;
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
 
-    const supabaseClient = createClient(
-      https://epulpwrjiuztkxygbezr.supabase.co/
-      sb_publishable_w5pO0E_xx0yc_tPUYiajFQ_Yk8KUxyH
-    );
+  <h2>Solicitar Asistencia</h2>
+
+  <input type="text" id="telefono" placeholder="Tu teléfono">
+  <input type="text" id="ubicacion" placeholder="Tu ubicación">
+  <input type="text" id="problema" placeholder="Describe tu problema">
+  <button onclick="enviarPedido()">Enviar Pedido</button>
+
+  <p id="mensaje"></p>
+
+  <script>
+    const supabaseUrl = "https://epulpwrjiuztkxygbezr.supabase.co";
+    const supabaseKey = "sb_publishable_w5pO0E_xx0yc_tPUYiajFQ_Yk8KUxyH";
+
+    const { createClient } = supabase;
+    const db = createClient(supabaseUrl, supabaseKey);
 
     async function enviarPedido() {
-      const nombre = document.getElementById("nombre").value;
       const telefono = document.getElementById("telefono").value;
       const ubicacion = document.getElementById("ubicacion").value;
       const problema = document.getElementById("problema").value;
 
-      const { error } = await supabaseClient
+      const { data, error } = await db
         .from("pedidos")
-        .insert([{ nombre, telefono, ubicacion, problema }]);
+        .insert([
+          { telefono, ubicacion, problema }
+        ]);
 
       if (error) {
-        alert("Error al enviar pedido");
-        console.log(error);
+        document.getElementById("mensaje").innerText = "Error: " + error.message;
       } else {
-        alert("Pedido enviado correctamente 🚗");
+        document.getElementById("mensaje").innerText = "Pedido enviado correctamente 🚗";
       }
     }
   </script>
