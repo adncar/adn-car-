@@ -27,6 +27,33 @@
   <button onclick="enviarPedido()">Enviar Pedido</button>
 
   <p id="mensaje"></p>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseUrl = 'TU_URL_DE_SUPABASE';
+const supabaseKey = 'TU_ANON_KEY';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+async function enviarPedido() {
+
+  const telefono = document.querySelector('input[placeholder="Tu teléfono"]').value;
+  const ubicacion = document.querySelector('input[placeholder="Tu ubicación"]').value;
+  const problema = document.querySelector('input[placeholder="Describe tu problema"]').value;
+
+  const { data, error } = await supabase
+    .from('pedidos')
+    .insert([
+      { telefono: telefono, ubicacion: ubicacion, problema: problema }
+    ]);
+
+  if (error) {
+    alert("Error al enviar pedido");
+    console.error(error);
+  } else {
+    alert("Pedido enviado correctamente 🚗");
+  }
+}
+</script>
 
   <script>
     const supabaseUrl = "https://epulpwrjiuztkxygbezr.supabase.co";
