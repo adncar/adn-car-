@@ -3,58 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <title>ADN CAR Help</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    input, button {
-      display: block;
-      margin: 10px 0;
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
       padding: 10px;
-      width: 300px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
+
 <body>
 
-  <h2>Solicitar Asistencia</h2>
+<div class="container">
+  <h2>Solicitar Asistencia 🚗</h2>
 
   <input type="text" id="telefono" placeholder="Tu teléfono">
   <input type="text" id="ubicacion" placeholder="Tu ubicación">
-  <input type="text" id="problema" placeholder="Describe tu problema">
-  <button onclick="enviarPedido()">Enviar Pedido</button>
+  <textarea id="problema" placeholder="Describe tu problema"></textarea>
 
-  <p id="mensaje"></p>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <button onclick="enviarPedido()">Enviar Pedido</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const supabaseUrl = 'TU_URL_DE_SUPABASE';
-const supabaseKey = 'TU_ANON_KEY';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  const supabaseUrl = "TU_URL_DE_SUPABASE";
+  const supabaseKey = "TU_ANON_KEY";
 
-async function enviarPedido() {
+  const client = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  const telefono = document.querySelector('input[placeholder="Tu teléfono"]').value;
-  const ubicacion = document.querySelector('input[placeholder="Tu ubicación"]').value;
-  const problema = document.querySelector('input[placeholder="Describe tu problema"]').value;
+  async function enviarPedido() {
 
-  const { data, error } = await supabase
-    .from('pedidos')
-    .insert([
-      { telefono: telefono, ubicacion: ubicacion, problema: problema }
-    ]);
+    const telefono = document.getElementById("telefono").value;
+    const ubicacion = document.getElementById("ubicacion").value;
+    const problema = document.getElementById("problema").value;
 
-  if (error) {
-    alert("Error al enviar pedido");
-    console.error(error);
-  } else {
-    alert("Pedido enviado correctamente 🚗");
+    if (!telefono || !ubicacion || !problema) {
+      alert("Por favor completa todos los campos");
+      return;
+    }
+
+    const { data, error } = await client
+      .from("pedidos")
+      .insert([
+        { telefono, ubicacion, problema }
+      ]);
+
+    if (error) {
+      alert("Error al enviar pedido");
+      console.error(error);
+    } else {
+      alert("Pedido enviado correctamente 🚗");
+      document.getElementById("telefono").value = "";
+      document.getElementById("ubicacion").value = "";
+      document.getElementById("problema").value = "";
+    }
   }
-}
 </script>
 
-  <script>
-    const supabaseUrl = "https://epulpwrjiuztkxygbezr.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwdWxwd3JqaXV6dGt4eWdiZXpyIiwicm9sZSI6Im
+</body>
+</html>
