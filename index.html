@@ -2,106 +2,53 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>ADN CAR Help</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADN CAR Help</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      width: 320px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <!-- Conexión con el CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
-  <h2>Solicitar Asistencia 🚗</h2>
+  <h1>ADN CAR Help 🚗</h1>
+  <h2>Solicitar Asistencia</h2>
 
-  <input type="text" id="telefono" placeholder="Tu teléfono">
-  <input type="text" id="ubicacion" placeholder="Tu ubicación">
-  <textarea id="problema" placeholder="Describe tu problema"></textarea>
+  <input type="text" placeholder="Tu teléfono">
+  <input type="text" placeholder="Tu ubicación">
+  <input type="text" placeholder="Describe tu problema">
 
   <button onclick="enviarPedido()">Enviar Pedido</button>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-  const supabaseUrl = https://epulpwrjiuztkxygbezr.supabase.co
-  const supabaseKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwdWxwd3JqaXV6dGt4eWdiZXpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwOTc2NDgsImV4cCI6MjA4NzY3MzY0OH0.fInMuKm5FDYhcoHlUClHIrJIfLYfSe2FfVY4JJVwBZI
+  <script>
+    const supabaseUrl = https://epulpwrjiuztkxygbezr.supabase.co
+    const supabaseKey = sb_publishable_w5pO0E_xx0yc_tPUYiajFQ_Yk8KUxyH
 
-  const client = window.supabase.createClient(supabaseUrl, supabaseKey);
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  async function enviarPedido() {
+    async function enviarPedido() {
 
-    const telefono = document.getElementById("telefono").value;
-    const ubicacion = document.getElementById("ubicacion").value;
-    const problema = document.getElementById("problema").value;
+      const telefono = document.querySelector('input[placeholder="Tu teléfono"]').value;
+      const ubicacion = document.querySelector('input[placeholder="Tu ubicación"]').value;
+      const problema = document.querySelector('input[placeholder="Describe tu problema"]').value;
 
-    if (!telefono || !ubicacion || !problema) {
-      alert("Por favor completa todos los campos");
-      return;
+      const { data, error } = await supabase
+        .from('pedidos')
+        .insert([
+          { telefono: telefono, ubicacion: ubicacion, problema: problema }
+        ]);
+
+      if (error) {
+        alert("Error al enviar pedido");
+        console.error(error);
+      } else {
+        alert("Pedido enviado correctamente 🚗");
+      }
     }
-
-    const { data, error } = await client
-      .from("pedidos")
-      .insert([
-        { telefono, ubicacion, problema }
-      ]);
-
-    if (error) {
-      alert("Error al enviar pedido");
-      console.error(error);
-    } else {
-      alert("Pedido enviado correctamente 🚗");
-      document.getElementById("telefono").value = "";
-      document.getElementById("ubicacion").value = "";
-      document.getElementById("problema").value = "";
-    }
-  }
-</script>
-  
+  </script>
 
 </body>
 </html>
